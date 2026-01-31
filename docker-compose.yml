@@ -6,7 +6,7 @@ services:
     container_name: evoque_restaurant
     restart: always
     ports:
-      - "9199:3000"
+      - "9199:9199"
     volumes:
       # This is CRITICAL for SQLite persistence
       # It maps the internal prisma folder to a local folder on your server
