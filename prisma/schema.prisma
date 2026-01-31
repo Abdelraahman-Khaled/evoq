@@ -1,0 +1,83 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model MenuItem {
+  id          String   @id @default(cuid())
+  name        String
+  description String
+  price       Float
+  category    String
+  image       String?
+  available   Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  orderItems  OrderItem[]
+}
+
+model Table {
+  id        Int      @id // User defined ID (e.g. Table 1, 5, 33)
+  seats     Int
+  status    String   @default("free") // free, occupied, reserved
+  orderId   String?  // Active Order ID
+  
+  // Relations
+  currentOrder Order? @relation("TableCurrentOrder", fields: [orderId], references: [id])
+  reservations Reservation[]
+  orders       Order[]   @relation("TableOrders")
+}
+
+model Reservation {
+  id        String   @id @default(cuid())
+  name      String
+  date      String   // ISO String or formatted
+  time      String
+  guests    Int
+  phone     String
+  notes     String?
+  status    String   @default("pending") // pending, confirmed, arrived, completed, cancelled
+  
+  tableId   Int?
+  table     Table?   @relation(fields: [tableId], references: [id])
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Order {
+  id        String      @id @default(cuid())
+  tableId   Int
+  table     Table       @relation("TableOrders", fields: [tableId], references: [id])
+  
+  // Inverse relation for the "current active order" on the table
+  activeTable Table[]   @relation("TableCurrentOrder")
+  
+  status    String      @default("open") // open, completed
+  total     Float       @default(0)
+  guests    Int         @default(1)
+  items     OrderItem[]
+  
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+}
+
+model OrderItem {
+  id        String   @id @default(cuid())
+  orderId   String
+  order     Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  
+  menuItemId String
+  menuItem   MenuItem @relation(fields: [menuItemId], references: [id])
+  
+  quantity  Int
+  price     Float    // Snapshot of price at time of order
+}

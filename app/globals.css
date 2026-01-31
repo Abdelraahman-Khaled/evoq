@@ -1,0 +1,60 @@
+@import "tailwindcss";
+
+@theme {
+  --color-gold-50: #fbf8eb;
+  --color-gold-100: #f5eed3;
+  --color-gold-200: #eaddaa;
+  --color-gold-300: #deb078;
+  --color-gold-400: #d4af37;
+  --color-gold-500: #b49b45;
+  --color-gold-600: #937424;
+  --color-gold-700: #76561b;
+  --color-gold-800: #62461b;
+  --color-gold-900: #543b1b;
+  
+  --color-black: #1a1a1a;
+  --color-charcoal: #2a2a2a;
+  --color-off-white: #f5f5f7;
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  --font-sans: var(--font-inter);
+  --font-serif: var(--font-playfair);
+  --font-arabic: var(--font-cairo);
+}
+
+:root {
+  --background: #1a1a1a;
+  --foreground: #f5f5f7;
+  
+  --primary: #d4af37;
+  --primary-foreground: #1a1a1a;
+  
+  --muted: #2a2a2a;
+  --muted-foreground: #a1a1aa;
+  
+  --border: #3f3f46;
+  --input: #27272a;
+  --ring: #d4af37;
+
+  /* Font Variables (mapped in layout.tsx) */
+  --font-inter: "Inter", sans-serif;
+  --font-playfair: "Playfair Display", serif;
+  --font-cairo: "Cairo", sans-serif;
+}
+
+@layer base {
+  body {
+    background-color: var(--background);
+    color: var(--foreground);
+    @apply antialiased font-sans selection:bg-gold-400 selection:text-black;
+  }
+}

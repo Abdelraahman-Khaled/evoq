@@ -1,0 +1,16 @@
+version: '3.8'
+
+services:
+  evoque-app:
+    build: .
+    container_name: evoque_restaurant
+    restart: always
+    ports:
+      - "9199:3000"
+    volumes:
+      # This is CRITICAL for SQLite persistence
+      # It maps the internal prisma folder to a local folder on your server
+      - ./prisma_data:/app/prisma/data
+    environment:
+      - DATABASE_URL=file:/app/prisma/data/dev.db
+      - NODE_ENV=production
